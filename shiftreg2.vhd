@@ -2,21 +2,23 @@ entity shiftreg2 is
 	port(	clk : in bit;
 			clr : in bit;
 			input : in bit;
-			q : out bit_vector(1 downto 0)
+			q0,q1 : out bit
 		);
 end entity shiftreg2;
 
 architecture struct of shiftreg2 is
-	signal qs : bit_vector(1 downto 0);
+	signal qs0,qs1 : bit;
 begin
 	process(clk,clr)
 	begin
 		if clr = '1' then
-			qs <= "00";
+			qs0 <= '0';
+			qs1 <= '0';
 		elsif clk'event and clk = '1' then
-			qs(1) <= input;
-			qs(0) <= qs(1);
+			qs1 <= input;
+			qs0 <= qs1;
 		end if;
 	end process;
-	q <= qs;
+	q0 <= qs0;
+	q1 <= qs1;
 end architecture struct;

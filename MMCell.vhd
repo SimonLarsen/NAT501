@@ -15,13 +15,12 @@ component full_adder
 			b : in bit;
 			c_in : in bit;
 			s : out bit;
-			c_out : out bit	);
+			c_out : out bit );
 end component full_adder;
 
 component dflipflop
-	port(	clk : in bit;
-			D   : in bit;
-			q   : out bit );
+	port(	clk, D : in bit;
+			q : out bit );
 end component dflipflop;
 
 signal abr_ab, a0_ab, a1_ab, ab_ams, ab_ms, ams_sr, ms_abr, m1_mq, 
