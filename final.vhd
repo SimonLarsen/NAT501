@@ -122,7 +122,7 @@ begin
 	e_clk <= mp4_c3 or f_ff_q;
 	not_switch_and_knap1 <= (not switch) and knap1;
 	final_clk <= (not load_ff_q) and not_switch_and_knap1;	
-	final_pop <= (not knap0) or ((not load_reg_q) or (not switch)); -- MAASKE BUGGY?!
+	final_pop <= (not knap0) or ((not load_reg_q) and (not switch)); -- MAASKE BUGGY?!
 	not_f_reg_q <= not f_reg_q;
 	f_out_led <= f_ff_q;
 	e_in <= e_reg_q or switch;
