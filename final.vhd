@@ -59,17 +59,17 @@ architecture struct of final is
 
 	signal GND_in, GND_out, not_knap3, not_knap2, knap2_or_3,
 	mp4_q, mp4_c0, mp4_c1, mp4_c2, mp4_c3,
-	e_clk, f_ff_q, not_f_ff_q, final_clk, final_pop,
+	mp4_or_s_y, mp4_or_s_z,	e_clk,
+	f_ff_q, final_clk, final_pop,
 	not_switch_and_knap1, load_reg_q,
 	load_ff_q, f_reg_q, not_f_reg_q, e_reg_q, e_in,
 	s_y, s_z, q_y, q_z,	s0_top_s, s0_bot_s,	s0_zm,
-	s1_ym, s1_m, s0_top_q, s1_top_s,
-	s2_ym, s2_m, s1_top_q, s2_top_s,
-	s1_zm, s0_top_b, s0_bot_b, s1_bot_s, s0_bot_q,
-	s2_zm, s1_bot_q, s3_zm, 
-	s1_top_b, s1_bot_b, s2_bot_s, s2_bot_q,
-	s3_ym, s3_m, s3_top_s, s2_top_b, s2_top_q, s2_bot_b, s3_bot_s, s3_bot_q,
-	mp4_or_s_y, mp4_or_s_z : bit;
+	s0_top_b, s0_bot_b, s0_top_q, s0_bot_q,
+	s1_top_s, s1_ym, s1_m, s1_top_q, s1_zm, s1_bot_s, 
+	s1_top_b, s1_bot_q, s1_bot_b, s2_ym, s2_m, s2_top_s,
+	s2_zm, s3_zm, s2_bot_s, s2_bot_q,
+	s2_top_b, s2_top_q, s2_bot_b, 
+	s3_ym, s3_m, s3_top_s, s3_bot_s, s3_bot_q : bit;
 begin
 	mp4_inst : mp4 port map (input => not_knap3, clk => knap2_or_3, s => selectors, q => mp4_q,
 		c0 => mp4_c0, c1 => mp4_c1, c2 => mp4_c2, c3 => mp4_c3);
@@ -98,32 +98,34 @@ begin
 	s1 : slice port map (ym_out => s1_ym, m_out => s1_m, top_q_in => s0_top_q, top_s_out => s1_top_s, zm_out => s1_zm,
 		top_b_in => s0_top_b, bot_b_in => s0_bot_b, bot_s_out => s1_bot_s, bot_q_in => s0_bot_q, e_in => e_in, 
 		mp4_clk0 => mp4_c0, mp4_clk1 => mp4_c1, mp4_clk2 => mp4_c2, pop => final_pop, clk => final_clk,
-		ym_in => s2_ym, m_in => s2_m, top_q_out => s1_top_q, top_s_in => s2_top_s, zm_in => s2_zm, top_b_out => s1_top_b,
-		bot_b_out => s1_bot_b, bot_s_in => s2_bot_s, bot_q_out => s1_bot_q);
+		y_led => y1, m_led => m1, ym_led => ym1, zm_led => zm1, ym_in => s2_ym, m_in => s2_m,
+		top_q_out => s1_top_q, top_s_in => s2_top_s, zm_in => s2_zm, top_b_out => s1_top_b, bot_b_out => s1_bot_b,
+		bot_s_in => s2_bot_s, bot_q_out => s1_bot_q);
 
 	s2 : slice port map (ym_out => s2_ym, m_out => s2_m, top_q_in => s1_top_q, top_s_out => s2_top_s, zm_out => s2_zm, top_b_in => s1_top_b,
 		bot_b_in => s1_bot_b, bot_s_out => s2_bot_s, bot_q_in => s1_bot_q, e_in => e_in,
 		mp4_clk0 => mp4_c0, mp4_clk1 => mp4_c1, mp4_clk2 => mp4_c2, pop => final_pop, clk => final_clk,
-		ym_in => s3_ym, m_in => s3_m, top_q_out => s2_top_q, top_s_in => s3_top_s, zm_in => s3_zm, top_b_out => s2_top_b, bot_b_out => s2_bot_b,
+		y_led => y2, m_led => m2, ym_led => ym2, zm_led => zm2, ym_in => s3_ym, m_in => s3_m, top_q_out => s2_top_q,
+		top_s_in => s3_top_s, zm_in => s3_zm, top_b_out => s2_top_b, bot_b_out => s2_bot_b,
 		bot_s_in => s3_bot_s, bot_q_out => s2_bot_q);
 
 	s3 : slice port map (ym_out => s3_ym, m_out => s3_m, top_q_in => s2_top_q, top_s_out => s3_top_s, zm_out => s3_zm, top_b_in => s2_top_b,
 		bot_b_in => s2_bot_b, bot_s_out => s3_bot_s, bot_q_in => s2_bot_q, e_in => e_in,
 		mp4_clk0 => mp4_c0, mp4_clk1 => mp4_c1, mp4_clk2 => mp4_c2, pop => final_pop, clk => final_clk,
-		ym_in => mp4_or_s_y, m_in => mp4_q, top_q_out => GND_out, top_s_in => GND_in, zm_in => mp4_or_s_z, top_b_out => GND_out, bot_b_out => GND_out,
+		y_led => y3, m_led => m3, ym_led => ym3, zm_led => zm3, ym_in => mp4_or_s_y, m_in => mp4_q, 
+		top_q_out => GND_out, top_s_in => GND_in, zm_in => mp4_or_s_z, top_b_out => GND_out, bot_b_out => GND_out,
 		bot_s_in => GND_in, bot_q_out => GND_out);
 
 	not_knap3 <= not knap3;
 	not_knap2 <= not knap2;
 	knap2_or_3 <= not_knap2 or not_knap3;
-	e_clk <= mp4_c3 or switch;
-	not_f_ff_q <= not f_ff_q;
+	e_clk <= mp4_c3 or f_ff_q;
 	not_switch_and_knap1 <= (not switch) and knap1;
 	final_clk <= (not load_ff_q) and not_switch_and_knap1;	
 	final_pop <= (not knap0) or ((not load_reg_q) or (not switch)); -- MAASKE BUGGY?!
 	not_f_reg_q <= not f_reg_q;
 	f_out_led <= f_ff_q;
-	e_in <= e_reg_q or f_ff_q;
+	e_in <= e_reg_q or switch;
 	mp4_or_s_y <= mp4_q or s_y;
 	mp4_or_s_z <= mp4_q or s_z;
 
